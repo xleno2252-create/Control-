@@ -90,3 +90,44 @@ void loop() {
   // Shutter module kept separate from Pan/Tilt
   // and controller communication.
 }
+
+// =================================
+// LIGHT FIRMWARE - COLOR WHEEL TEST
+// Arduino UNO
+// Standalone input test
+// =================================
+
+const int CW_INPUT  = 2;
+const int CCW_INPUT = 3;
+const int STOP_INPUT = 4;
+
+void setup() {
+  Serial.begin(9600);
+
+  pinMode(CW_INPUT, INPUT_PULLUP);
+  pinMode(CCW_INPUT, INPUT_PULLUP);
+  pinMode(STOP_INPUT, INPUT_PULLUP);
+
+  Serial.println("Colour wheel input test");
+}
+
+void loop() {
+  bool cw   = digitalRead(CW_INPUT) == LOW;
+  bool ccw  = digitalRead(CCW_INPUT) == LOW;
+  bool stop = digitalRead(STOP_INPUT) == LOW;
+
+  if (stop || (cw && ccw)) {
+    Serial.println("STOP");
+  }
+  else if (cw) {
+    Serial.println("CLOCKWISE");
+  }
+  else if (ccw) {
+    Serial.println("ANTICLOCKWISE");
+  }
+  else {
+    Serial.println("IDLE");
+  }
+
+  delay(100);
+}
