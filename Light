@@ -1,0 +1,92 @@
+// =======================================
+// MOVING HEAD - PAN & TILT CALIBRATION
+// Board: Arduino UNO
+// Sensors: Potentiometers
+// =======================================
+
+const int PAN_FB  = A0;
+const int TILT_FB = A1;
+
+// Calibration values (temporary)
+const int PAN_MIN  = 100;
+const int PAN_MAX  = 920;
+
+const int TILT_MIN = 100;
+const int TILT_MAX = 920;
+
+float readAngle(int pin, int rawMin, int rawMax) {
+  int raw = analogRead(pin);
+
+  float angle = (float)(raw - rawMin) *
+                180.0 / (rawMax - rawMin);
+
+  angle = constrain(angle, 0.0, 180.0);
+
+  return angle;
+}
+
+void setup() {
+  Serial.begin(9600);
+
+  pinMode(PAN_FB, INPUT);
+  pinMode(TILT_FB, INPUT);
+
+  Serial.println("PAN & TILT CALIBRATION");
+  Serial.println("------------------------");
+}
+
+void loop() {
+  int panRaw  = analogRead(PAN_FB);
+  int tiltRaw = analogRead(TILT_FB);
+
+  float panAngle = readAngle(PAN_FB, PAN_MIN, PAN_MAX);
+  float tiltAngle = readAngle(TILT_FB, TILT_MIN, TILT_MAX);
+
+  Serial.print("PAN Raw: ");
+  Serial.print(panRaw);
+  Serial.print(" | Angle: ");
+  Serial.print(panAngle, 1);
+  Serial.print(" deg");
+
+  Serial.print(" || TILT Raw: ");
+  Serial.print(tiltRaw);
+  Serial.print(" | Angle: ");
+  Serial.print(tiltAngle, 1);
+  Serial.println(" deg");
+
+  delay(100);
+}
+// ======================================
+// MOVING HEAD - SHUTTER MODULE
+// Fixture firmware only
+// Rotating perforated disc
+// No position sensor
+// ======================================
+
+// Shutter motor driver pins
+const uint8_t SHUTTER_IN1 = A4;
+const uint8_t SHUTTER_IN2 = A5;
+
+// Light output
+const uint8_t LIGHT_PIN = 9;
+
+void shutterInit() {
+  pinMode(SHUTTER_IN1, OUTPUT);
+  pinMode(SHUTTER_IN2, OUTPUT);
+  pinMode(LIGHT_PIN, OUTPUT);
+
+  digitalWrite(SHUTTER_IN1, LOW);
+  digitalWrite(SHUTTER_IN2, LOW);
+
+  // Light remains ON
+  digitalWrite(LIGHT_PIN, HIGH);
+}
+
+void setup() {
+  shutterInit();
+}
+
+void loop() {
+  // Shutter module kept separate from Pan/Tilt
+  // and controller communication.
+}
