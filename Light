@@ -131,3 +131,45 @@ void loop() {
 
   delay(100);
 }
+
+// =====================================
+// LIGHT FIRMWARE
+// Signal interface module scaffold
+// =====================================
+
+struct SignalStatus {
+  bool connected;
+  bool valid;
+  unsigned long lastUpdate;
+};
+
+SignalStatus signalStatus = {
+  false,
+  false,
+  0
+};
+
+void signalInit() {
+  signalStatus.connected = false;
+  signalStatus.valid = false;
+  signalStatus.lastUpdate = 0;
+}
+
+void signalDiagnostics() {
+  // Signal monitoring and diagnostics
+}
+
+void setup() {
+  signalInit();
+
+  // Pan/Tilt initialization
+  // Shutter initialization
+  // Colour wheel initialization
+  // Light output initialization
+}
+
+void loop() {
+  signalDiagnostics();
+
+  // Fixture module updates
+}
